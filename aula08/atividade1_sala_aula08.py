@@ -9,8 +9,11 @@ Crie uma lista vazia cahamada compra peca ao usuario para digitar 3 itens adicio
 lista_compra = []
 
 for i in range (3):
-    item = input ("Digite um item: ")
+    item = int(input ("Digite um item: "))
     lista_compra.append(item)
+    
+print(sum(lista_compra) / len(lista_compra))
+    
 
 for valor in lista_compra:
     print("-",valor)
