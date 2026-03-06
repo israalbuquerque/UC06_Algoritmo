@@ -7,7 +7,8 @@ while True:
     nome = input("Digite seu nome: ")
     idade = input("Digite sua idade: ")
 
-    def pede_dados():
+    def pede_dados(nome, idade):
+
 
 
         if idade.isdigit():
@@ -16,19 +17,20 @@ while True:
             print("Valor digitado em idade não e um numero!")
 
 
-
-        with open("aula10/cadastro.txt", "w") as arquivo_nome:
-            arquivo_nome.write(nome)
-        with open("aula10/cadastro.txt", "a") as arquivo_idade:
-            arquivo_idade.write("\n",idade)
+        if type(nome) == str and type(idade) == int:
+            with open("aula10/cadastro.txt", "a") as arquivo_nome:
+                arquivo_nome.write(nome + "-" + str(idade) + "\n")
 
 
+        # else:
+        #     print("O tipo de dado inserido foi incorreto!")
 
 
-    pede_dados()
+
+
+    pede_dados(nome, idade)
 
     escolha = input("Você quer realizar a açaõ novamente [S/N]: ").lower()
     if escolha != "s":
         print("Ação cancelada!")
         break
-
