@@ -54,15 +54,6 @@ if numero_aleatoria == numero_usuario:
 else:
         print("tente novamente!")
 
-#APIs(aplication programan interface)
-#por padrao as APIS vem em dois padroes XML e  Jason
-#teremos que ter campos com nome de meio termo EX: em um sistema tem o campo nome_aluno e no outro sistema esta nome_pessoa, teremos que definir no XML 
-#com um nome meio termo podendo ser só nome no XML informando que os campos sao iguais 
-#|Em Jason a forma de escrever e parecida com uma dicionario em python 
-# Jason EX: 
-#[{
-# "time": "Corinthians"
-#}]
 
 
 
