@@ -59,6 +59,7 @@ import os
 
 PATH = "BANCO/cadastro_clinetes.xlsx"
 
+
 print("**************** MENU ***************")
 
 print("1- Criar conta")
@@ -220,7 +221,7 @@ if escolha.isdigit():
             
             
             numero_conta = 0
-            agencia = 0
+            agencia = 400
             extrato = 0
             dados_inclientes = {
                 "nome_cliente": [nome_cliente],
@@ -294,10 +295,91 @@ if escolha.isdigit():
                 nome =  linha["nome_cliente"]
                 break
         if encontrado:
-            print("Bem vindo", nome)    
+            print("------------Bem vindo", nome, "----------------------")
+            print("1- Saque")
+            print("2- Deposito")
+            print("3- Saldo")
+            opcao = input("Digite uma opção: ") 
+            print("-----------------------------------------------------")
+
+            ler_dt = pd.read_excel(PATH)
+            extrato = float(linha["extrato"])
+            taxa_corrente = 0.05
+            taxa_salario = 0.02
+
+            if opcao.isdigit():
+                opcao = float(opcao)
+                if opcao == 1:
+                    print("---------Você escolheu a opção saque---------------")
+                    valor_saque = float(input("Digite o valor que quer saquar: "))
+                    if valor_saque <= extrato:
+                        if ler_dt.loc[i,"conta_cliente"] == "Corrente":
+                            atualizacao_extrato = extrato - (valor_saque +(valor_saque * taxa_corrente))
+                            ler_dt.loc[i, "extrato"] = atualizacao_extrato
+                            ler_dt.to_excel(PATH, index = False)
+                        
+                            print("Saque realizado com sucesso!")
+                            print("Saque: ", valor_saque)
+                            print("Valor em conta: ", atualizacao_extrato)
+                            print("Taxa para saque: 5%")
+                            print("Valor de desconto saque: ", atualizacao_extrato)
+            
+                        elif ler_dt.loc[i,"conta_cliente"] == "Salário":
+                            atualizacao_extrato = extrato - (valor_saque +(valor_saque * taxa_salario))
+                            ler_dt.loc[i, "extrato"] = atualizacao_extrato
+                            ler_dt.to_excel(PATH, index = False)
+                        
+                            print("Saque realizado com sucesso!")
+                            print("Saque: ", valor_saque)
+                            print("Valor em conta: ", atualizacao_extrato)
+                            print("Taxa para saque: 2%")
+                            print("Valor de desconto saque: ", atualizacao_extrato)
+            else:
+                print("Opção invalida!")    
 
         else:
             print("Usuário não encontrado!")
 
 else:
     print("O que foi digitado não é um número valido!")
+
+'''
+Quando o usuário selecionar a opção "2 - Acessar conta" e o campo cpf e numero_conta forem encontrados na base, além de mostrar a mensagem acima, mostre um menu com as seguintes opções:
+
+1 - Saque
+2 - Deposito
+3 - Saldo
+
+Regras para cada opção
+1 - Saque > solicitar ao usuário que digite um valor, podendo ser inteiro ou de ponto flutuante:
+- O valor solicitado para saque não pode ser maior que o valor em conta(coluna extrato_bancario), se for digitado um valor maior encerre o fluxo e mostre a mensagem "Valor maior que o disponivel em conta";
+- Se o valor for menor que o disponivel em conta, realizar a subitração (do valor solicitado - o valor na coluna extrato_bancario - taxa de saque), quando a operação for realizada com sucesso mostre a mensagem 
+print("================================================")
+print(      Saque realizado com sucesso!)
+print(      Saque: (valor Solicitado)
+print(      Valor em conta: (coluna extrato_bancario))
+print(      Taxa para saque: (seguir regras para cada conta))
+print(      Valor de desconto saque: (seguir regras para cada conta))
+print("================================================\n")
+
+OBS: Criar a logica de desconto da taxa para cada conta especifica
+
+
+
+2 - Deposito > solicitar ao usuário que digite um valor, podendo ser inteiro ou de ponto flutuante, se o valor for valido então somar com o valor já existente na coluna "extrato_bancario"  ao finalizar mostrar o seguinte template
+print("================================================")
+print("   	Valor depositado: (Variavel do valor depositado)")
+print("   	Saldo em conta: (Coluna extrato_bancario)
+print("================================================\n")
+valor final da conta bancaria(coluna extrato_bancario);
+- Se o usuário digita um número negativo então encerre o fluxo e mostre a mensagem "Numero invalido, operação encerrada";
+
+
+
+3 - Saldo > Mostre em tela o seguinte template
+print("================================================")
+print("   Tipo conta: (coluna tipo_conta)")
+print("   Saldo em conta: (Coluna extrato_bancario)
+print("================================================\n")
+
+'''
