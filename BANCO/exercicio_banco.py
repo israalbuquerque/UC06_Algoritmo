@@ -303,30 +303,33 @@ if escolha.isdigit():
             print("-----------------------------------------------------")
 
             ler_dt = pd.read_excel(PATH)
+            conta_cliente = linha["conta_cliente"]
             extrato = float(linha["extrato"])
             taxa_corrente = 0.05
             taxa_salario = 0.02
+            taxa_poupanca = 0.0
 
             if opcao.isdigit():
                 opcao = float(opcao)
                 if opcao == 1:
                     print("---------Você escolheu a opção saque---------------")
-                    valor_saque = float(input("Digite o valor que quer saquar: "))
+                    valor_saque = int(input("Digite o valor que quer saquar: "))
                     if valor_saque <= extrato:
                         if ler_dt.loc[i,"conta_cliente"] == "Corrente":
                             atualizacao_extrato = extrato - (valor_saque +(valor_saque * taxa_corrente))
-                            ler_dt.loc[i, "extrato"] = atualizacao_extrato
+                            ler_dt.loc[i, "extrato"] = int(atualizacao_extrato)
                             ler_dt.to_excel(PATH, index = False)
+                            valor_taxa = valor_saque * taxa_corrente
                         
                             print("Saque realizado com sucesso!")
                             print("Saque: ", valor_saque)
                             print("Valor em conta: ", atualizacao_extrato)
                             print("Taxa para saque: 5%")
-                            print("Valor de desconto saque: ", atualizacao_extrato)
+                            print("Valor de desconto saque: ", valor_taxa )
             
                         elif ler_dt.loc[i,"conta_cliente"] == "Salário":
                             atualizacao_extrato = extrato - (valor_saque +(valor_saque * taxa_salario))
-                            ler_dt.loc[i, "extrato"] = atualizacao_extrato
+                            ler_dt.loc[i, "extrato"] = int(atualizacao_extrato)
                             ler_dt.to_excel(PATH, index = False)
                         
                             print("Saque realizado com sucesso!")
@@ -334,6 +337,40 @@ if escolha.isdigit():
                             print("Valor em conta: ", atualizacao_extrato)
                             print("Taxa para saque: 2%")
                             print("Valor de desconto saque: ", atualizacao_extrato)
+                            valor_taxa = valor_saque * taxa_salario
+
+                        elif ler_dt.loc[i,"conta_cliente"] == "Poupança":
+                            atualizacao_extrato = extrato - (valor_saque +(valor_saque * taxa_poupanca))
+                            ler_dt.loc[i, "extrato"] = int(atualizacao_extrato)
+                            ler_dt.to_excel(PATH, index = False)
+                        
+                            print("Saque realizado com sucesso!")
+                            print("Saque: ", valor_saque)
+                            print("Valor em conta: ", atualizacao_extrato)
+                            print("Taxa para saque: 0%")
+                            print("Valor de desconto saque: ", atualizacao_extrato)
+                            valor_taxa = valor_saque * taxa_poupanca
+                if opcao == 2:
+                    valor_digitado = int(input("Digite o valor do deposito: "))
+
+                    resultado_extrato = int(valor_digitado)  + int(extrato)
+                    
+                    ler_dt.loc[i, "extrato"] = resultado_extrato
+
+                    extrato = resultado_extrato
+
+                    print("================================================")
+                    print("   	Valor depositado: ", valor_digitado)
+                    print("   	Saldo em conta: ", resultado_extrato)
+                    print("================================================\n")
+                    ler_dt.to_excel(PATH, index = False)
+
+                if opcao == 3:
+                    print("================================================")
+                    print("   	Tipo conta: ", conta_cliente)
+                    print("   	Saldo em conta: ", extrato)
+                    print("================================================\n")
+                    
             else:
                 print("Opção invalida!")    
 
